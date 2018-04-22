@@ -1,0 +1,87 @@
+\documentclass{TheMartianReport}
+\usepackage{lipsum}
+
+%%%%%%%%%%%%%%%%%%%%%% COVER PAGE VALUES %%%%%%%%%%%%%%%%%%%%%%
+%\title{Concept Document} % Change document title
+\author{Author Name} % Change author name
+\project{Project Name} % Change (or omit) project name
+%\date{} % Change displayed date value from default
+\imagefolder{./examples} % Change folder to look for images in
+%\logo{} % Add logo image to cover page
+\revision{Revision 1.0} % Change revision number
+
+%%%%%%%%%%%%%%%%%%%%%%% GENERAL SETTINGS %%%%%%%%%%%%%%%%%%%%%%%
+%\bibliographystyle{abbrvnat} % Change bibliography style
+%\footertext{}{} % Change values in footer text
+%\nofootertext % Hide footer text
+\imageref{Header image is "Space Shuttle Columbia launching" from NASA Commons} % Reference where header images came from (appear on last page as footnote)
+\drafting % Comment out to hide \temp and \crit sections
+%\sectionnumbers% Sections are major numbers, subsections minor, etc.
+%\subsectionnumbers % Sections not numbered, only begin at subsections and below
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%\printhelp % Use this to see/print help pages
+
+\subsection{Executive Summary}
+This is what text looks like if you put it before the first section in a document. \lipsum[100]
+
+\section{Section heading}{sectionimage.jpg}
+\lipsum[100]
+
+\subsection{Subsection Name}
+\lipsum[100]
+\begin{nicelist}{List Title}
+\item list item one
+\item list item two
+\item this also exists for enums with niceenum	
+\end{nicelist}
+\lipsum[100]
+
+\subsection{Another Subsection Name}
+\lipsum[100]
+
+\section{Second Section Name}
+\temp{These are some notes for yourself, designed for use when dummying out sections, only visible when you put \textbf{\textbackslash drafting} in the preamble. You can comment it out or remove it to not see this.}
+\lipsum[50]
+\crit{These are some other notes for yourself, designed for use when critiquing sections, only visible when you put \textbf{\textbackslash drafting} in the preamble. You can comment it out or remove it to not see this.}
+\lipsum[100]
+\tipbox*{Note}{This is a wrapped tipbox. This is text that goes in the note, let me see if it wraps and still looks nice?}
+\lipsum
+
+\subsection{Second Subsection Name}
+\lipsum[100]
+\tipbox{Alert!}{This is a non-wrapped tipbox (no paragraph after it). This is text that goes in the note, let me see if it wraps and still looks nice?}
+
+\subsubsection{Subsubsection Name}
+\lipsum[80]
+\begin{niceenum}{Enum Title}
+	\item This is an item
+	\item This is a second item	
+	\item \link{secretlab.com.au}{This item is a link}
+\end{niceenum}
+\lipsum[40]
+
+\subsubsubsection{Subsubsubsection Name}
+\lipsum[100]
+
+
+\subsubsubsubsection{Subsubsubsubsection Name}
+\lipsum[40]
+
+\subsubsubsubsubsection{Subsubsubsubsection Name}
+\lipsum[40] Please see Figure \ref{img:logo.png}.
+
+\image{0.4}{latex.png}{Caption Text}
+
+\subsubsubsubsubsubsection{Subsubsubsubsubsection Name}
+\lipsum[100]
+
+\subsubsubsubsubsubsubsection{Subsubsubsubsubsubsection Name}
+\lipsum[100] As per \cite{kopka2003guide}, \cite{mittelbach2004latex}, \cite{hahn1993latex}, \cite{long2015concept}, and \cite{griffiths1997learning}.
+
+\bibliography{citations.bib}
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
