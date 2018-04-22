@@ -13,7 +13,7 @@ It requires the [geometry](http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/con
 
 # Commands
 | Value | Description | Default |
-|:---:|:---:|:---:|
+| --- | --- | --- |
 | **\title**{<text>} | Document title string for cover page & footer) | "Concept Document" |
 | **\author**{<text>} | Document author string (for cover page & footer) | blank |
 | **\project**{<text>} | Document project name (optional) | blank |
@@ -25,7 +25,7 @@ It requires the [geometry](http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/con
 | **\logo**{<image-filename.jpg>} | Image file to display on cover page | none (hidden) |
 
 |Command | Use |
-|:---:|:---:|:---:|
+| --- | --- |
 | **\printhelp** | Adds page to PDF that shows all available TMR commands and help |
 | **\drafting** | Hides \temp and \crit sections in text for final printing |
 | **\nofootertext** | Equivalent to \footertext{}{} |
