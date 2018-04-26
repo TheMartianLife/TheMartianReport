@@ -9,17 +9,6 @@
 % Last Updated: 26/04/2018
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TMR Main File: resume.tex
-% Author: Marina Rose "Mars" Geldard
-% http://github.com/TheMartianLife/
-
-% Available for others' use under:
-% The MIT License (https://opensource.org/licenses/MIT)
-
-% Last Updated: 22/04/2018
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{TheMartianReport}[2018 Project Documentation LaTeX class]
 
@@ -65,11 +54,33 @@
 
 % TABLE OF CONTENTS STYLING
 \renewcommand{\cftdot}{}
-\cftsetindents{subsection}{0em}{2.5em}
 \cftpagenumbersoff{subsection}
+\setcounter{tocdepth}{2}
+\renewcommand{\cftsecpresnum}{\begin{lrbox}{\@tempboxa}}
+\renewcommand{\cftsecaftersnum}{\end{lrbox}}
+\setlength{\cftsecnumwidth}{0pt}
+\renewcommand{\cftsubsecpresnum}{\begin{lrbox}{\@tempboxa}}
+\renewcommand{\cftsubsecaftersnum}{\end{lrbox}}
+\setlength{\cftsubsecnumwidth}{0pt}
+\cftsetindents{subsection}{0em}{0em}
+
 
 % MAKE TITLE PAGE
-\AtBeginDocument{\pagestyle{fancyplain}\titlepage}
+\AtBeginDocument{\pagestyle{fancyplain}\titlepage%
+	\ifsectionnumbers
+		\renewcommand{\thesection}{\arabic{section}}
+		\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+		\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+	\else
+		\ifsubsectionnumbers
+			\renewcommand{\thesection}{\kern-1em}
+			\renewcommand{\thesubsection}{\arabic{subsection}}
+			\renewcommand{\thesubsubsection}{\arabic{subsection}.\arabic{subsubsection}}		
+		\else
+			\setcounter{secnumdepth}{0}
+		\fi
+	\fi
+}
 \renewcommand{\titlepage}{%
 	\thispagestyle{title}
 	\begin{flushleft}	
@@ -88,7 +99,8 @@
 	\parbox{0.98\linewidth}{\@starttoc{toc}}
 	\vspace{10pt}\linebreak	
 	\end{centering}
-	\rule{\textwidth}{4pt}%\pagebreak
+	\rule{\textwidth}{4pt}
+	\pagebreak
 }
 
 % HEADER/FOOTER STYLE
@@ -117,55 +129,23 @@
 		\linebreak		
 	}
 	\rule{\textwidth}{4pt}
-	\ifsectionnumbers
-		\IfBooleanTF{#1}{\oldsection*{#2}}{\oldsection{#2}}
-	\else
-		\oldsection*{#2}
-		\addcontentsline{toc}{section}{#2}
-	\fi
-	\IfNoValueF{#4}{\label{sec:#4}%
-	\ifdrafting
-		\textit{\color{magenta}~Anchor: sec:#4}
-	\fi}
+	\IfBooleanTF{#1}{\oldsection*{#2}}{\oldsection{#2}}%
+	\IfNoValueF{#4}{\label{sec:#4}\ifdrafting\textit{\color{magenta}~Anchor sec:#4}\fi}
 }
 
 % HEADING STYLES
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}{2ex}{2ex}{\Large\bfseries\MakeUppercase}}
 \let\oldsubsection\subsection
 \RenewDocumentCommand{\subsection}{s m o}{%
-	\ifsectionnumbers
-		\IfBooleanTF{#1}{\oldsubsection*{#2}}{\oldsubsection{#2}}
-	\else
-		\ifsubsectionnumbers
-			\IfBooleanTF{#1}{\oldsubsection*{#2}}{%
-				\stepcounter{subsection}%
-				\oldsubsection*{\arabic{subsection}~~#2}
-				\addcontentsline{toc}{subsection}{#2}}
-		\else
-			\oldsubsection*{#2}
-			\addcontentsline{toc}{subsection}{#2}
-		\fi	
-	\fi
-	\IfNoValueF{#3}{\label{sub:#3}%
-	\ifdrafting
-		\textit{\color{magenta}~Anchor: sub:#3}
-	\fi}
+	\IfBooleanTF{#1}{\oldsubsection*{#2}}{\oldsubsection{#2}}%
+	\IfNoValueF{#3}{\label{sub:#3}\ifdrafting\textit{\color{magenta}~Anchor sub:#3}\fi}
 }
 
-\renewcommand\subsubsection{\@startsection{subsection}{3}{\z@}{2ex}{2ex}{\large\textbf}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}{2ex}{2ex}{\large\textbf}}
 \let\oldsubsubsection\subsubsection
 \RenewDocumentCommand{\subsubsection}{s m o}{%
-	\ifsubsectionnumbers
-		\IfBooleanTF{#1}{\oldsubsubsection*{#2}}{%
-			\stepcounter{subsubsection}%
-			\oldsubsubsection*{\arabic{subsection}.\arabic{subsubsection}~~#2}}%
-	\else
-		\oldsubsubsection*{#2}
-	\fi	
-	\IfNoValueF{#3}{\label{sss:#3}%
-	\ifdrafting
-		\textit{\color{magenta}~Anchor: sss:#3}
-	\fi}
+	\IfBooleanTF{#1}{\oldsubsubsection*{#2}}{\oldsubsubsection{#2}}%
+	\IfNoValueF{#3}{\label{sss:#3}\ifdrafting\textit{\color{magenta}~Anchor sss:#3}\fi}
 }
 
 \newcommand{\subsubsubsection}[1]{%
