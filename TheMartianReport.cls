@@ -6,6 +6,17 @@
 % Available for others' use under:
 % The MIT License (https://opensource.org/licenses/MIT)
 
+% Last Updated: 26/04/2018
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TMR Main File: resume.tex
+% Author: Marina Rose "Mars" Geldard
+% http://github.com/TheMartianLife/
+
+% Available for others' use under:
+% The MIT License (https://opensource.org/licenses/MIT)
+
 % Last Updated: 22/04/2018
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -24,6 +35,7 @@
 \RequirePackage{fancyhdr}
 \RequirePackage[table]{xcolor}
 \RequirePackage{wrapfig}
+\RequirePackage{titlesec}
 \RequirePackage[round, sort, comma]{natbib}
 \RequirePackage[hidelinks]{hyperref}
 
@@ -42,18 +54,19 @@
 
 % SET DEFAULT VALUES OTHERWISE
 \title{Concept Document}
-\author{}
-\project{}
+\author{~}
+\project{~}
 \imagefolder{.}
 \revision{Revision 1.0}
 \bibliographystyle{abbrvnat}
 \def\@lfooter{\@title}
 \def\@rfooter{\@author}
-\imageref{}
+\imageref{~}
 
-% TABLEOFCONTENTS STYLING
-\cftpagenumbersoff{subsection}
+% TABLE OF CONTENTS STYLING
+\renewcommand{\cftdot}{}
 \cftsetindents{subsection}{0em}{2.5em}
+\cftpagenumbersoff{subsection}
 
 % MAKE TITLE PAGE
 \AtBeginDocument{\pagestyle{fancyplain}\titlepage}
@@ -74,8 +87,8 @@
 	\begin{centering}
 	\parbox{0.98\linewidth}{\@starttoc{toc}}
 	\vspace{10pt}\linebreak	
-	\end{centering}\pagebreak
-	\rule{\textwidth}{4pt}
+	\end{centering}
+	\rule{\textwidth}{4pt}%\pagebreak
 }
 
 % HEADER/FOOTER STYLE
@@ -93,92 +106,66 @@
 \cfoot{\footnotesize\thepage}
 \rfoot{\footnotesize\MakeUppercase\@rfooter}
 
-
-% NUMBERING OPTIONS
-\newif\ifsectionnumbers
-\newcommand{\sectionnumbers}{%
-	\sectionnumberstrue
-}
-
-\newif\ifsubsectionnumbers
-\newcommand{\subsectionnumbers}{%
-	\subsectionnumberstrue
-}
-
-\newif\ifresetnumbering
-\NewDocumentCommand{\resetnumbering}{g g}{%
-	\def\@nextsectionnumber{1}
-	\def\@nextpagenumber{1}
-	\IfNoValueF{#1}{%
-		\if\relax\detokenize{#1}\relax
-			% empty parameter, don't change
-		\else
-			\def\@nextsectionnumber{#1}
-		\fi
-	}
-	\IfNoValueF{#2}{%
-		\if\relax\detokenize{#2}\relax
-			% empty parameter, don't change
-		\else
-			\def\@nextpagenumber{#2}
-		\fi
-	}
-	\resetnumberingtrue
-}
-
 % SECTION HEADING STYLE
-\RenewDocumentCommand{\section}{s m g}{%
-	\begin{flushleft}
-	\pagebreak
-	\IfNoValueF{#3}{%
+\renewcommand\section{\@startsection{section}{1}{\z@}{0.1ex}{0.1ex}{\Huge\textbf}}
+\let\oldsection\section
+\RenewDocumentCommand{\section}{s m g o}{%
+	\clearpage
+	\IfNoValueF{#3}
+	{
 		\includegraphics[width=\textwidth]{\@imagefolder/#3}
-		\linebreak
+		\linebreak		
 	}
 	\rule{\textwidth}{4pt}
-	\vspace{0pt}\linebreak
-	\IfBooleanF{#1}{%
-		\stepcounter{section}
-	    \ifresetnumbering
-	    	\setcounter{section}{\@nextsectionnumber}
-	    	\setcounter{page}{\@nextpagenumber}
-	    	\resetnumberingfalse
-	    \fi
-		\ifsectionnumbers
-			\textbf{\Huge\arabic{section}~}
-		\fi
-		\addcontentsline{toc}{section}{#2}%
-	}%
-	\textbf{\Huge#2}
-	\vspace{1em}
-	\end{flushleft}
+	\ifsectionnumbers
+		\IfBooleanTF{#1}{\oldsection*{#2}}{\oldsection{#2}}
+	\else
+		\oldsection*{#2}
+		\addcontentsline{toc}{section}{#2}
+	\fi
+	\IfNoValueF{#4}{\label{sec:#4}%
+	\ifdrafting
+		\textit{\color{magenta}~Anchor: sec:#4}
+	\fi}
 }
 
 % HEADING STYLES
-\renewcommand{\subsection}[1]{%
-	\begin{flushleft}
-	\stepcounter{subsection}
-	\vspace{12pt}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}{2ex}{2ex}{\Large\bfseries\MakeUppercase}}
+\let\oldsubsection\subsection
+\RenewDocumentCommand{\subsection}{s m o}{%
 	\ifsectionnumbers
-		\textbf{\Large\arabic{section}.\arabic{subsection}~}
+		\IfBooleanTF{#1}{\oldsubsection*{#2}}{\oldsubsection{#2}}
+	\else
+		\ifsubsectionnumbers
+			\IfBooleanTF{#1}{\oldsubsection*{#2}}{%
+				\stepcounter{subsection}%
+				\oldsubsection*{\arabic{subsection}~~#2}
+				\addcontentsline{toc}{subsection}{#2}}
+		\else
+			\oldsubsection*{#2}
+			\addcontentsline{toc}{subsection}{#2}
+		\fi	
 	\fi
-	\ifsubsectionnumbers
-		\textbf{\Large\arabic{subsection}~}
-	\fi	
-	\textbf{\Large\MakeUppercase{#1}}
-	\addcontentsline{toc}{subsection}{#1}
-	\vspace{0pt}
-	\end{flushleft}
+	\IfNoValueF{#3}{\label{sub:#3}%
+	\ifdrafting
+		\textit{\color{magenta}~Anchor: sub:#3}
+	\fi}
 }
 
-\renewcommand{\subsubsection}[1]{%
-	\begin{flushleft}
-	\stepcounter{subsubsection}
-	\vspace{12pt}
+\renewcommand\subsubsection{\@startsection{subsection}{3}{\z@}{2ex}{2ex}{\large\textbf}}
+\let\oldsubsubsection\subsubsection
+\RenewDocumentCommand{\subsubsection}{s m o}{%
 	\ifsubsectionnumbers
-		\textbf{\large\arabic{subsection}.\arabic{subsubsection}~}
-	\fi
-	\textbf{\large#1}
-	\end{flushleft}
+		\IfBooleanTF{#1}{\oldsubsubsection*{#2}}{%
+			\stepcounter{subsubsection}%
+			\oldsubsubsection*{\arabic{subsection}.\arabic{subsubsection}~~#2}}%
+	\else
+		\oldsubsubsection*{#2}
+	\fi	
+	\IfNoValueF{#3}{\label{sss:#3}%
+	\ifdrafting
+		\textit{\color{magenta}~Anchor: sss:#3}
+	\fi}
 }
 
 \newcommand{\subsubsubsection}[1]{%
@@ -297,6 +284,38 @@
     {\end{enumerate}
     }
     
+% NUMBERING OPTIONS
+\newif\ifsectionnumbers
+\newcommand{\sectionnumbers}{%
+	\sectionnumberstrue
+}
+
+\newif\ifsubsectionnumbers
+\newcommand{\subsectionnumbers}{%
+	\subsectionnumberstrue
+}
+
+\newif\ifresetnumbering
+\NewDocumentCommand{\resetnumbering}{g g}{%
+	\def\@nextsectionnumber{1}
+	\def\@nextpagenumber{1}
+	\IfNoValueF{#1}{%
+		\if\relax\detokenize{#1}\relax
+			% empty parameter, don't change
+		\else
+			\def\@nextsectionnumber{#1}
+		\fi
+	}
+	\IfNoValueF{#2}{%
+		\if\relax\detokenize{#2}\relax
+			% empty parameter, don't change
+		\else
+			\def\@nextpagenumber{#2}
+		\fi
+	}
+	\resetnumberingtrue
+}
+    
 % BE HELPFUL
 \newcommand{\printhelp}{%
 	\clearpage
@@ -329,10 +348,6 @@
 		\textbf{\textbackslash nofootertext} \% MAKES FOOTER ONLY PAGE NUMBER
 		
 		\textbf{\textbackslash footertext\{\}\{\}} \% CHANGES FOOTER TEXT TO GIVEN TEXT
-		
-		\textbf{\textbackslash sectionnumbers} \% SHOWS NUMBERS IN SECTION AND SUBSECTION HEADINGS \textbf{OR}
-		
-		\textbf{\textbackslash subsectionnumbers} \% SHOWS NUMBERS IN SUBSECTION AND SUBSUBSECTION HEADINGS\\
 	
 	\underline{Commands for within the document}\\
 	
