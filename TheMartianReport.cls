@@ -10,7 +10,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{TheMartianReport}[2018 Project Documentation LaTeX class]
+\ProvidesClass{TheMartianReport}[2018/04/26 Project Documentation LaTeX class]
 
 % SET UP PAPER DIMENSIONS
 \LoadClass[10pt, a4paper]{article}
